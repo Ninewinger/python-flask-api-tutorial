@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+import json
 app = Flask(__name__)
 
 todos = [
@@ -8,15 +9,14 @@ todos = [
 
 @app.route('/todos', methods=['GET'])
 def hello_world():
-  json_todos = jsonify(todos)
-  return json_todos
+  return jsonify(todos)
 
 @app.route('/todos', methods=['POST'])
 def add_new_todo():
-  request_post = request.data
-  todos.append(request_post)
-  json_todos = jsonify(todos)
-  return json_todos
+  request_body = request.data
+  todo_py = json.loads(request_body)
+  todos.append(todo_py)
+  return jsonify(todos)
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=3245, debug=True)
